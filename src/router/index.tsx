@@ -1,28 +1,27 @@
-import { HashRouter, Redirect, Route, Switch } from "react-router-dom";
-import routes from "./routes";
+import { createHashRouter } from "react-router-dom";
+
 import DashboardPage from "~/pages/Dashboard";
 import NewUserPage from "~/pages/NewUser";
 
-const Router = () => {
-  return (
-    <div style={{ marginTop: 64 }}>
-      <HashRouter>
-        <Switch>
-          <Route exact path={routes.dashboard} component={DashboardPage} />
-          <Route exact path={routes.newUser} component={NewUserPage} />
-          <Route
-            exact
-            path={routes.history}
-            component={() => <div>History</div>}
-          />
+import routes from "./routes";
 
-          <Route exact path="*">
-            <Redirect to={routes.dashboard} />
-          </Route>
-        </Switch>
-      </HashRouter>
-    </div>
-  );
-};
+const router = createHashRouter([
+  {
+    path: routes.dashboard,
+    element: <DashboardPage />,
+  },
+  {
+    path: routes.newUser,
+    element: <NewUserPage />,
+  },
+  {
+    path: routes.history,
+    element: <div>History</div>,
+  },
+  {
+    path: "*",
+    element: <DashboardPage />,
+  },
+]);
 
-export default Router;
+export default router;
