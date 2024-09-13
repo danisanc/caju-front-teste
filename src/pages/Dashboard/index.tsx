@@ -1,13 +1,32 @@
-import { SearchBar } from "~/pages/Dashboard/components/Searchbar";
-import Collumns from "~/pages/Dashboard/components/Columns";
+import { Suspense } from 'react';
+import { Await, defer, useLoaderData } from 'react-router-dom';
 
-import * as S from "./styles";
+import { Collumns } from '~/pages/Dashboard/components/Columns';
+import { SearchBar } from '~/pages/Dashboard/components/Searchbar';
+import * as Api from '~/services/api';
+import { Registration } from '~/types';
+
+import * as S from './styles';
+
+export const dashboardLoader = () => {
+  const registrationsPromise = Api.get<Registration[]>('registrations');
+  return defer({ registrationsPromise });
+};
 
 const DashboardPage = () => {
+  const { registrationsPromise } = useLoaderData() as {
+    registrationsPromise: Promise<Registration[]>;
+  };
+
   return (
     <S.Container>
       <SearchBar />
-      <Collumns registrations={[]} />
+
+      <Suspense fallback={<h1>Loading Comments...</h1>}>
+        <Await resolve={registrationsPromise}>
+          {(registrations) => <Collumns registrations={registrations} />}
+        </Await>
+      </Suspense>
     </S.Container>
   );
 };
