@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { Await, defer, useLoaderData } from 'react-router-dom';
 
+import Loading from '~/components/Loading';
 import { Collumns } from '~/pages/Dashboard/components/Columns';
 import { SearchBar } from '~/pages/Dashboard/components/Searchbar';
 import * as Api from '~/services/api';
@@ -22,7 +23,7 @@ const DashboardPage = () => {
     <S.Container>
       <SearchBar />
 
-      <Suspense fallback={<h1>Loading Comments...</h1>}>
+      <Suspense fallback={<Loading />}>
         <Await resolve={registrationsPromise}>
           {(registrations) => <Collumns registrations={registrations} />}
         </Await>

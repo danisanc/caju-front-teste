@@ -1,12 +1,12 @@
-import { HiRefresh } from "react-icons/hi";
-import { useNavigate } from "react-router-dom";
+import { HiRefresh } from 'react-icons/hi';
+import { useNavigate } from 'react-router-dom';
 
-import { IconButton } from "~/components/Buttons/IconButton";
-import Button from "~/components/Buttons";
-import routes from "~/router/routes";
-import TextField from "~/components/TextField";
+import Button from '~/components/Buttons';
+import { IconButton } from '~/components/Buttons/IconButton';
+import TextField from '~/components/TextField';
+import routes from '~/router/routes';
 
-import * as S from "./styles";
+import * as S from './styles';
 
 export const SearchBar = () => {
   const navigate = useNavigate();
@@ -16,12 +16,12 @@ export const SearchBar = () => {
   };
 
   const refetchData = () => {
-    navigate(".", { replace: true });
+    navigate('.', { replace: true });
   };
 
   return (
     <S.Container>
-      <TextField placeholder="Digite um CPF válido" />
+      <TextField mask="999.999.999-99" placeholder="Digite um CPF válido" />
 
       <S.Actions>
         <IconButton aria-label="refetch" onClick={refetchData}>
