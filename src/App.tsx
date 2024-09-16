@@ -1,11 +1,14 @@
-import { RouterProvider } from "react-router-dom";
+import { RouterProvider } from 'react-router-dom';
+import { Toaster } from 'sonner';
 
-import { Header } from "~/components/Header";
-import router from "~/router";
+import { Header } from '~/components/Header';
+import router from '~/router';
 
 function App() {
   return (
     <>
+      <Toaster richColors position="bottom-center" />
+
       <Header>
         <h1>Caju Front Teste</h1>
       </Header>

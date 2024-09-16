@@ -1,18 +1,34 @@
 import {
-  HiOutlineMail,
-  HiOutlineUser,
   HiOutlineCalendar,
+  HiOutlineMail,
   HiOutlineTrash,
-} from "react-icons/hi";
-import { useRevalidator } from "react-router-dom";
+  HiOutlineUser,
+} from 'react-icons/hi';
+import { useRevalidator } from 'react-router-dom';
+import { toast } from 'sonner';
 
-import { ButtonSmall } from "~/components/Buttons";
-import * as Api from "~/services/api";
+import { ButtonSmall } from '~/components/Buttons';
+import { Dialog } from '~/components/Dialog';
+import * as Api from '~/services/api';
 
-import * as S from "./styles";
+import * as S from './styles';
 
 type Props = {
   data: any;
+};
+
+const ConfirmModalDescriptions: { [key in string]: string } = {
+  APPROVED: 'Deseja aprovar o candidato?',
+  REPROVED: 'Deseja reprovar o candidato?',
+  REVIEW: 'Deseja revisar novamente o candidato?',
+  DELETE: 'Deseja remover o candidato?',
+};
+
+const ConfirmModalToast: { [key in string]: string } = {
+  APPROVED: 'aprovado(a)',
+  REPROVED: 'reprovado(a)',
+  REVIEW: 'pronto(a) para ser revisado(a)',
+  DELETE: 'removido(a)',
 };
 
 const RegistrationCard = (props: Props) => {
@@ -24,12 +40,18 @@ const RegistrationCard = (props: Props) => {
       status: status,
     }).finally(() => {
       revalidate();
+
+      toast.success(`${props.data.employeeName} ${ConfirmModalToast[status]}`);
     });
   };
 
   const handleDelete = () => {
     Api.del(`registrations/${props.data.id}`).finally(() => {
       revalidate();
+
+      toast.success(
+        `${props.data.employeeName} ${ConfirmModalToast['DELETE']}`,
+      );
     });
   };
 
@@ -51,39 +73,40 @@ const RegistrationCard = (props: Props) => {
       </S.IconAndText>
 
       <S.Actions>
-        {props.data.status === "REVIEW" ? (
-          <ButtonSmall
-            bgcolor="rgb(155, 229, 155)"
-            onClick={() => handleChangeStatus("APPROVED")}
+        {props.data.status === 'REVIEW' && (
+          <Dialog
+            description={ConfirmModalDescriptions['APPROVED']}
+            onConfirm={() => handleChangeStatus('APPROVED')}
           >
-            Aprovar
-          </ButtonSmall>
-        ) : undefined}
+            <ButtonSmall bgcolor="rgb(155, 229, 155)">Aprovar</ButtonSmall>
+          </Dialog>
+        )}
 
-        {props.data.status === "REVIEW" ? (
-          <ButtonSmall
-            bgcolor="rgb(255, 145, 154)"
-            onClick={() => handleChangeStatus("REPROVED")}
+        {props.data.status === 'REVIEW' && (
+          <Dialog
+            description={ConfirmModalDescriptions['REPROVED']}
+            onConfirm={() => handleChangeStatus('REPROVED')}
           >
-            Reprovar
-          </ButtonSmall>
-        ) : undefined}
+            <ButtonSmall bgcolor="rgb(255, 145, 154)">Reprovar</ButtonSmall>
+          </Dialog>
+        )}
 
-        {props.data.status === "APPROVED" ||
-        props.data.status === "REPROVED" ? (
-          <ButtonSmall
-            bgcolor="#ff8858"
-            onClick={() => handleChangeStatus("REVIEW")}
+        {(props.data.status === 'APPROVED' ||
+          props.data.status === 'REPROVED') && (
+          <Dialog
+            description={ConfirmModalDescriptions['REVIEW']}
+            onConfirm={() => handleChangeStatus('REVIEW')}
           >
-            Revisar novamente
-          </ButtonSmall>
-        ) : undefined}
+            <ButtonSmall bgcolor="#ff8858">Revisar novamente</ButtonSmall>
+          </Dialog>
+        )}
 
-        <HiOutlineTrash
-          onClick={() => {
-            handleDelete();
-          }}
-        />
+        <Dialog
+          description={ConfirmModalDescriptions['DELETE']}
+          onConfirm={() => handleDelete()}
+        >
+          <HiOutlineTrash fontSize={14} />
+        </Dialog>
       </S.Actions>
     </S.Card>
   );
