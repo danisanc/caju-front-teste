@@ -1,5 +1,10 @@
 import { Suspense } from 'react';
-import { Await, defer, useLoaderData } from 'react-router-dom';
+import {
+  Await,
+  LoaderFunctionArgs,
+  defer,
+  useLoaderData,
+} from 'react-router-dom';
 
 import Loading from '~/components/Loading';
 import { Collumns } from '~/pages/Dashboard/components/Columns';
@@ -9,8 +14,14 @@ import { Registration } from '~/types';
 
 import * as S from './styles';
 
-export const dashboardLoader = () => {
-  const registrationsPromise = Api.get<Registration[]>('registrations');
+export const dashboardLoader = ({ request }: LoaderFunctionArgs) => {
+  const url = new URL(request.url);
+  const documentTerm = url.searchParams.get('cpf');
+
+  const registrationsPromise = Api.get<Registration[]>(
+    documentTerm ? `registrations?cpf=${documentTerm}` : 'registrations',
+  );
+
   return defer({ registrationsPromise });
 };
 
