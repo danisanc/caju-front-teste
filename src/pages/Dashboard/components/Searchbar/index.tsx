@@ -39,6 +39,7 @@ export const SearchBar = () => {
   return (
     <S.Container>
       <TextField
+        name="cpf"
         mask="999.999.999-99"
         placeholder="Digite um CPF válido"
         value={cpf}
@@ -46,7 +47,7 @@ export const SearchBar = () => {
       />
 
       <S.Actions>
-        <IconButton aria-label="refetch" onClick={refetchData}>
+        <IconButton aria-label="Atualizar" onClick={refetchData}>
           <HiRefresh />
         </IconButton>
 

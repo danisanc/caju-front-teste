@@ -8,6 +8,7 @@ import { useRevalidator } from 'react-router-dom';
 import { toast } from 'sonner';
 
 import { ButtonSmall } from '~/components/Buttons';
+import { IconButton } from '~/components/Buttons/IconButton';
 import { Dialog } from '~/components/Dialog';
 import * as Api from '~/services/api';
 
@@ -78,7 +79,9 @@ const RegistrationCard = (props: Props) => {
             description={ConfirmModalDescriptions['APPROVED']}
             onConfirm={() => handleChangeStatus('APPROVED')}
           >
-            <ButtonSmall bgcolor="rgb(155, 229, 155)">Aprovar</ButtonSmall>
+            <ButtonSmall as="span" bgcolor="rgb(155, 229, 155)">
+              Aprovar
+            </ButtonSmall>
           </Dialog>
         )}
 
@@ -87,7 +90,9 @@ const RegistrationCard = (props: Props) => {
             description={ConfirmModalDescriptions['REPROVED']}
             onConfirm={() => handleChangeStatus('REPROVED')}
           >
-            <ButtonSmall bgcolor="rgb(255, 145, 154)">Reprovar</ButtonSmall>
+            <ButtonSmall as="span" bgcolor="rgb(255, 145, 154)">
+              Reprovar
+            </ButtonSmall>
           </Dialog>
         )}
 
@@ -97,7 +102,9 @@ const RegistrationCard = (props: Props) => {
             description={ConfirmModalDescriptions['REVIEW']}
             onConfirm={() => handleChangeStatus('REVIEW')}
           >
-            <ButtonSmall bgcolor="#ff8858">Revisar novamente</ButtonSmall>
+            <ButtonSmall as="span" bgcolor="#ff8858">
+              Revisar novamente
+            </ButtonSmall>
           </Dialog>
         )}
 
@@ -105,7 +112,9 @@ const RegistrationCard = (props: Props) => {
           description={ConfirmModalDescriptions['DELETE']}
           onConfirm={() => handleDelete()}
         >
-          <HiOutlineTrash fontSize={14} />
+          <IconButton as="span" aria-label="Remover">
+            <HiOutlineTrash />
+          </IconButton>
         </Dialog>
       </S.Actions>
     </S.Card>

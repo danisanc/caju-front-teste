@@ -20,20 +20,25 @@ export const Wrapper = styled.div`
   top: 0;
   width: 100vw;
   z-index: 100;
-`;
 
-export const Spinner = styled.div`
-  animation: ${rotate} 0.8s linear infinite;
-  border-radius: 100%;
-  border: 4px solid #e3c3ca;
-  border-top-color: rgba(232, 5, 55, 1);
-  padding: 16px;
+  div {
+    animation: ${rotate} 0.8s linear infinite;
+    border-radius: 100%;
+    border: 4px solid #e3c3ca;
+    border-top-color: rgba(232, 5, 55, 1);
+    padding: 16px;
+  }
+
+  span {
+    display: none;
+  }
 `;
 
 const Loading = () => {
   return (
-    <Wrapper>
-      <Spinner />
+    <Wrapper role="status">
+      <div />
+      <span>Carregando ...</span>
     </Wrapper>
   );
 };
