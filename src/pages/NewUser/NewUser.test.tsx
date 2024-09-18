@@ -7,8 +7,6 @@ import routes from '~/router/routes';
 
 import NewUserPage from '.';
 
-userEvent.setup();
-
 const mockedUseNavigate = jest.fn();
 
 jest.mock('react-router-dom', () => ({

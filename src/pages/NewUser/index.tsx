@@ -4,15 +4,14 @@ import { HiOutlineArrowLeft } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useHookFormMask } from 'use-mask-input';
-import * as yup from 'yup';
 
 import Button from '~/components/Buttons';
 import { IconButton } from '~/components/Buttons/IconButton';
 import TextField from '~/components/TextField';
 import routes from '~/router/routes';
 import * as Api from '~/services/api';
-import { validateCpf } from '~/utils/validateCpf';
 
+import { newUserSchema } from './schema';
 import * as S from './styles';
 
 type FormType = {
@@ -22,29 +21,6 @@ type FormType = {
   date: string;
 };
 
-const schema = yup.object().shape({
-  name: yup
-    .string()
-    .trim()
-    .min(2, 'Nome muito curto')
-    .matches(/\s/, { message: 'Digite seu nome completo' })
-    .test('validate-first-caracter', 'Digite um nome válido', (val) =>
-      val ? isNaN(parseInt(val.charAt(0)) ?? '') : true,
-    )
-    .required('Digite seu nome'),
-  email: yup
-    .string()
-    .email('Digite um email válido')
-    .required('Digite seu email'),
-  cpf: yup
-    .string()
-    .test('validate-cpf', 'Digite um CPF válido', (val) =>
-      validateCpf(val ?? ''),
-    )
-    .required('Digite seu CPF'),
-  date: yup.string().required('Selecione uma data'),
-});
-
 const NewUserPage = () => {
   const navigate = useNavigate();
   const {
@@ -52,7 +28,7 @@ const NewUserPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormType>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(newUserSchema),
   });
   const registerWithMask = useHookFormMask(register);
 

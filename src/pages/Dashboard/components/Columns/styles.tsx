@@ -1,18 +1,19 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+
 const registrationStatusStyles: {
   [key in string]: { background: string; title: string };
 } = {
   REVIEW: {
-    background: "#FDF8E9",
-    title: "#EFC24D",
+    background: '#FDF8E9',
+    title: '#EFC24D',
   },
   APPROVED: {
-    background: "#EEEEFD",
-    title: "#4242DF",
+    background: '#EEEEFD',
+    title: '#4242DF',
   },
   REPROVED: {
-    background: "#FBEDF6",
-    title: "#CE2893",
+    background: '#FBEDF6',
+    title: '#CE2893',
   },
 };
 

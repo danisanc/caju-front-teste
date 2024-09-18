@@ -35,25 +35,37 @@ const ConfirmModalToast: { [key in string]: string } = {
 const RegistrationCard = (props: Props) => {
   const { revalidate } = useRevalidator();
 
+  const isReview = props.data.status === 'REVIEW';
+  const isReviwed =
+    props.data.status === 'APPROVED' || props.data.status === 'REPROVED';
+
   const handleChangeStatus = (status: string) => {
     Api.put(`registrations/${props.data.id}`, {
       ...props.data,
       status: status,
-    }).finally(() => {
-      revalidate();
-
-      toast.success(`${props.data.employeeName} ${ConfirmModalToast[status]}`);
-    });
+    })
+      .then(() => {
+        toast.success(
+          `${props.data.employeeName} ${ConfirmModalToast[status]}`,
+        );
+        revalidate();
+      })
+      .catch(() => {
+        toast.error(`Erro ao tentar atualizar candidato(a)`);
+      });
   };
 
   const handleDelete = () => {
-    Api.del(`registrations/${props.data.id}`).finally(() => {
-      revalidate();
-
-      toast.success(
-        `${props.data.employeeName} ${ConfirmModalToast['DELETE']}`,
-      );
-    });
+    Api.del(`registrations/${props.data.id}`)
+      .then(() => {
+        toast.success(
+          `${props.data.employeeName} ${ConfirmModalToast['DELETE']}`,
+        );
+        revalidate();
+      })
+      .catch(() => {
+        toast.error(`Erro ao tentar remover candidato(a)`);
+      });
   };
 
   return (
@@ -74,7 +86,7 @@ const RegistrationCard = (props: Props) => {
       </S.IconAndText>
 
       <S.Actions>
-        {props.data.status === 'REVIEW' && (
+        {isReview ? (
           <Dialog
             description={ConfirmModalDescriptions['APPROVED']}
             onConfirm={() => handleChangeStatus('APPROVED')}
@@ -83,9 +95,9 @@ const RegistrationCard = (props: Props) => {
               Aprovar
             </ButtonSmall>
           </Dialog>
-        )}
+        ) : undefined}
 
-        {props.data.status === 'REVIEW' && (
+        {isReview ? (
           <Dialog
             description={ConfirmModalDescriptions['REPROVED']}
             onConfirm={() => handleChangeStatus('REPROVED')}
@@ -94,10 +106,9 @@ const RegistrationCard = (props: Props) => {
               Reprovar
             </ButtonSmall>
           </Dialog>
-        )}
+        ) : undefined}
 
-        {(props.data.status === 'APPROVED' ||
-          props.data.status === 'REPROVED') && (
+        {isReviwed ? (
           <Dialog
             description={ConfirmModalDescriptions['REVIEW']}
             onConfirm={() => handleChangeStatus('REVIEW')}
@@ -106,7 +117,7 @@ const RegistrationCard = (props: Props) => {
               Revisar novamente
             </ButtonSmall>
           </Dialog>
-        )}
+        ) : undefined}
 
         <Dialog
           description={ConfirmModalDescriptions['DELETE']}

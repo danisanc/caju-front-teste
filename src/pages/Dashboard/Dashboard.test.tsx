@@ -8,8 +8,6 @@ import routes from '~/router/routes';
 
 import Dashboard from '.';
 
-userEvent.setup();
-
 const registrationsPromiseMock = Promise.resolve(REGISTRATIONS_MOCK);
 const mockedUseNavigate = jest.fn();
 const mockedSetSearchParam = jest.fn();
@@ -26,13 +24,13 @@ const RenderComponent = () => {
   const router = createMemoryRouter(
     [
       {
-        path: '/dashboard',
+        path: routes.dashboard,
         element: <Dashboard />,
         loader: () => defer({ registrationsPromise: registrationsPromiseMock }),
       },
     ],
     {
-      initialEntries: ['/', '/dashboard'],
+      initialEntries: ['/', routes.dashboard],
       initialIndex: 1,
     },
   );

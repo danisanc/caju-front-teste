@@ -14,6 +14,10 @@ import { Registration } from '~/types';
 
 import * as S from './styles';
 
+type LoaderType = {
+  registrationsPromise: Promise<Registration[]>;
+};
+
 export const dashboardLoader = ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const documentTerm = url.searchParams.get('cpf');
@@ -26,9 +30,7 @@ export const dashboardLoader = ({ request }: LoaderFunctionArgs) => {
 };
 
 const DashboardPage = () => {
-  const { registrationsPromise } = useLoaderData() as {
-    registrationsPromise: Promise<Registration[]>;
-  };
+  const { registrationsPromise } = useLoaderData() as LoaderType;
 
   return (
     <S.Container>
