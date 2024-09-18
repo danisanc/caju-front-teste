@@ -9,7 +9,7 @@ describe('TextField', () => {
         name="name"
         placeholder="Nome"
         label="Nome"
-        error="Erro no nome"
+        error={{ type: 'required', message: 'Erro no nome' }}
       />,
     );
 
