@@ -1,4 +1,4 @@
-const route = import.meta.env.VITE_API_URL;
+const route = 'http://localhost:3000';
 
 export const get = <T>(path: string) =>
   new Promise<T>((resolve, reject) => {
