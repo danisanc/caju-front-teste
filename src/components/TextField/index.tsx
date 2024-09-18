@@ -1,4 +1,5 @@
-import { InputHTMLAttributes } from 'react';
+import { InputHTMLAttributes, forwardRef } from 'react';
+import { FieldError } from 'react-hook-form';
 import styled from 'styled-components';
 import { withMask } from 'use-mask-input';
 
@@ -31,11 +32,11 @@ export const ErrorLabel = styled.span`
 type Props = {
   name: string;
   label?: string;
-  error?: string;
   mask?: string;
+  error?: FieldError;
 } & InputHTMLAttributes<any>;
 
-const TextField = (props: Props) => {
+const TextField = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
   return (
     <div>
       <label htmlFor={props.name}>{props.label}</label>
@@ -43,16 +44,17 @@ const TextField = (props: Props) => {
       <Input
         {...props}
         id={props.name}
-        ref={props.mask ? withMask(props.mask) : undefined}
+        ref={props.mask ? withMask(props.mask) : ref}
+        aria-invalid={props.error?.message ? 'true' : 'false'}
         aria-label={props.label ?? props.name}
         aria-describedby={`${props.name}-error`}
       />
 
       <ErrorLabel id={`${props.name}-error`} role="alert">
-        {props.error}
+        {props.error?.message}
       </ErrorLabel>
     </div>
   );
-};
+});
 
 export default TextField;
